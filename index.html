@@ -50,16 +50,23 @@
 </head>
 
 <body>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "1a2c9d345d9842f499c08adb483fa80f"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
   <main>
     <form>
       <fieldset>
         <legend>Error Calculator</legend>
         <input name="first-num" id="first-num" />
         <select name="operator" id="operator">
-          <option>+</option>
-          <option>-</option>
-          <option>*</option>
-          <option>/</option>
+          <option value="+"">+</option>
+          <option value="-">-</option>
+          <option value="*">*</option>
+          <option value="/">/</option>
         </select>
         <input name="second-num" id="second-num" />
         <button id="calculate">Calculate</button>
@@ -83,11 +90,15 @@
       <button>Start Timer</button>
       <button>End Timer</button>
       <button>Console Trace</button>
+      <button>Throw an Error</button>
       <button>Trigger a Global Error</button>
     </section>
   </main>
 
   <script>
+    addEventListener("error", (event) => {
+      console.log(event.message);
+    });
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -102,6 +113,161 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    for(let i = 0; i < errorBtns.length; i++){
+      if(errorBtns[i].innerHTML == "Console Log"){
+        errorBtns[i].addEventListener('click', e => {
+          let inp1 = document.querySelector('#first-num').value;
+          let inp2 = document.querySelector('#second-num').value;
+          let op = document.querySelector('#operator').value;
+
+          console.log(inp1 + " " + op + " " + inp2);
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Error"){
+        errorBtns[i].addEventListener('click', e => {
+          let inp1 = document.querySelector('#first-num').value;
+          let inp2 = document.querySelector('#second-num').value;
+          let op = document.querySelector('#operator').value;
+
+          console.error(inp1 + " " + op + " " + inp2 + " fails!");
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Count"){
+        errorBtns[i].addEventListener('click', e => {
+          let inp1 = document.querySelector('#first-num').value;
+          let inp2 = document.querySelector('#second-num').value;
+          let op = document.querySelector('#operator').value;
+
+          for(let j = 0; j < parseInt(inp1); j++){
+            console.count();
+          }
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Warn"){
+        errorBtns[i].addEventListener('click', e => {
+          let inp1 = document.querySelector('#first-num').value;
+          let inp2 = document.querySelector('#second-num').value;
+          let op = document.querySelector('#operator').value;
+
+          console.warn(inp1 + " " + op + " " + inp2 + " might not work!");
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Assert"){
+        errorBtns[i].addEventListener('click', e => {
+          let inp1 = document.querySelector('#first-num').value;
+          let inp2 = document.querySelector('#second-num').value;
+          let op = document.querySelector('#operator').value;
+
+          console.assert(inp1 < 100 && inp2 < 100, "Numbers are dangerously large.");
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Clear"){
+        errorBtns[i].addEventListener('click', e => {
+          console.clear();
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Dir"){
+        errorBtns[i].addEventListener('click', e => {
+          let inp1 = document.querySelector('#first-num').value;
+          let inp2 = document.querySelector('#second-num').value;
+          let op = document.querySelector('#operator').value;
+          let object = {
+            i1:inp1,
+            i2:inp2,
+            op:op
+          };
+
+          console.dir(object);
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console dirxml"){
+        errorBtns[i].addEventListener('click', e => {
+
+          console.dirxml(form);
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Group Start"){
+        errorBtns[i].addEventListener('click', e => {
+          console.group();
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Group End"){
+        errorBtns[i].addEventListener('click', e => {
+          console.groupEnd();
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Table"){
+        errorBtns[i].addEventListener('click', e => {
+          let inp1 = document.querySelector('#first-num').value;
+          let inp2 = document.querySelector('#second-num').value;
+          let op = document.querySelector('#operator').value;
+          let object = {
+            i1:inp1,
+            i2:inp2,
+            op:op
+          };
+
+          console.table(object);
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Start Timer"){
+        errorBtns[i].addEventListener('click', e => {
+          console.time();
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "End Timer"){
+        errorBtns[i].addEventListener('click', e => {
+          console.timeEnd();
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Console Trace"){
+        errorBtns[i].addEventListener('click', e => {
+          console.trace();
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Throw an Error"){
+        errorBtns[i].addEventListener('click', e => {
+          try{
+            let inp1 = document.querySelector('.first-num')
+            let inp2 = document.querySelector('.second-num')
+            console.log(inp1.value + inp2.value);
+          }
+          catch(e){
+            throw new ClassInsteadOfIDError("You are using class instead of id to select your element!");
+          }
+        })
+      }
+
+      if(errorBtns[i].innerHTML == "Trigger a Global Error"){
+        errorBtns[i].addEventListener('click', e => {
+          let inp1 = document.querySelector('.first-num')
+          let inp2 = document.querySelector('.second-num')
+          console.log(inp1.value + inp2.value);
+        })
+      }
+    }
+
+    class ClassInsteadOfIDError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "ClassInsteadOfIdError"; // (2)
+      }
+    }
   </script>
 </body>
 
